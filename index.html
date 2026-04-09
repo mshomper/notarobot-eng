@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Not A Robot Engineering</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0b;
+    --surface: #111114;
+    --surface2: #18181c;
+    --border: rgba(255,255,255,0.07);
+    --border-hi: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --muted: #888580;
+    --accent: #c8f542;
+    --accent2: #42e8f5;
+    --accent3: #f5a842;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --px: clamp(1.25rem, 5vw, 3rem);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem var(--px);
+    background: rgba(10,10,11,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 7rem var(--px) 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,245,66,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,245,66,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .hero-text { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    font-family: var(--font-display);
+    font-size: clamp(0.6rem, 1.8vw, 0.72rem);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+    overflow-wrap: break-word;
+  }
+
+  .hero h1 .alt { color: var(--accent); display: block; }
+
+  .hero-sub {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    max-width: 40ch;
+  }
+
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    background: var(--accent);
+    color: #0a0a0b;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: #d8ff55; transform: translateY(-1px); }
+
+  .btn-ghost {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border-hi);
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* TPMS VIEWER */
+  .hero-viewer {
+    position: relative;
+    z-index: 1;
+  }
+
+  .viewer-frame {
+    background: #06080f;
+    border: 1px solid var(--border-hi);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .viewer-canvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    cursor: grab;
+  }
+
+  .viewer-canvas:active { cursor: grabbing; }
+
+  .viewer-controls {
+    padding: 0.75rem 1rem;
+    background: #0d0d12;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .viewer-surface-tabs {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .surf-tab {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border-hi);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .surf-tab.active {
+    background: var(--accent);
+    color: #0a0a0b;
+    border-color: var(--accent);
+  }
+
+  .viewer-sliders {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .slider-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .slider-group label {
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 42px;
+  }
+
+  .slider-group input[type=range] {
+    flex: 1;
+    accent-color: var(--accent);
+    height: 3px;
+    cursor: pointer;
+  }
+
+  .slider-val {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 28px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .viewer-hint {
+    position: absolute;
+    bottom: 56px; left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    pointer-events: none;
+    white-space: nowrap;
+    transition: opacity 0.5s;
+  }
+
+  .viewer-badge {
+    position: absolute;
+    top: 0.75rem; right: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    background: rgba(66,232,245,0.08);
+    border: 1px solid rgba(66,232,245,0.2);
+    padding: 0.2rem 0.55rem;
+    pointer-events: none;
+  }
+
+  /* STATS */
+  .stats-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem var(--px);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: var(--text);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-number span { color: var(--accent); }
+
+  .stat-label {
+    font-size: clamp(0.58rem, 1.5vw, 0.72rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    display: block;
+    font-family: var(--font-display);
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem var(--px); }
+
+  .section-tag {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-tag::before {
+    content: '';
+    display: inline-block;
+    width: 28px; height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    overflow-wrap: break-word;
+  }
+
+  .section-subtitle {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: var(--muted);
+    max-width: 52ch;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  /* CAPABILITIES */
+  #capabilities { background: var(--bg); }
+
+  .cap-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    max-width: 760px;
+  }
+
+  .cap-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: padding-left 0.3s;
+  }
+
+  .cap-item:first-child { border-top: 1px solid var(--border); }
+  .cap-item:hover { padding-left: 0.75rem; }
+
+  .cap-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .cap-name {
+    font-family: var(--font-display);
+    font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .cap-arrow {
+    font-size: 1rem;
+    color: var(--muted);
+    transition: color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .cap-item:hover .cap-arrow { color: var(--accent); transform: translateX(4px); }
+
+  .cap-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* SERVICES */
+  #services { background: var(--surface); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 4rem;
+    border: 1px solid var(--border);
+  }
+
+  .service-card {
+    background: var(--surface);
+    padding: 2.5rem 2rem;
+    transition: background 0.25s;
+  }
+
+  .service-card:hover { background: var(--surface2); }
+
+  .service-number {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .service-icon { width: 40px; height: 40px; margin-bottom: 1.25rem; }
+
+  .service-name {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .service-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem; }
+
+  .tag {
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--border-hi);
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ABOUT */
+  #about {
+    background: var(--bg);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-visual {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+  }
+
+  .about-accent-line {
+    width: 3px;
+    height: 50px;
+    background: var(--accent3);
+    margin-bottom: 1.75rem;
+  }
+
+  .about-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .about-attr {
+    margin-top: 1.25rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: var(--font-display);
+  }
+
+  .expertise-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+
+  .pill {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    font-weight: 500;
+  }
+
+  .pill-accent { background: rgba(200,245,66,0.1); color: var(--accent); border: 1px solid rgba(200,245,66,0.25); }
+  .pill-cyan   { background: rgba(66,232,245,0.08); color: var(--accent2); border: 1px solid rgba(66,232,245,0.2); }
+  .pill-amber  { background: rgba(245,168,66,0.08); color: var(--accent3); border: 1px solid rgba(245,168,66,0.2); }
+
+  /* CONTACT */
+  #contact { background: var(--surface); text-align: center; }
+  .contact-inner { max-width: 640px; margin: 0 auto; }
+
+  .contact-email {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 4vw, 2.2rem);
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    display: block;
+    margin: 2.5rem 0;
+    transition: opacity 0.2s;
+    word-break: break-all;
+  }
+
+  .contact-email:hover { opacity: 0.75; }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 2rem var(--px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .footer-copy { font-size: 0.75rem; color: var(--muted); font-weight: 300; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
+  .hero h1      { animation: fadeUp 0.7s 0.15s ease both; }
+  .hero-sub     { animation: fadeUp 0.7s 0.28s ease both; }
+  .hero-ctas    { animation: fadeUp 0.7s 0.4s  ease both; }
+  .hero-viewer  { animation: fadeUp 0.7s 0.25s ease both; }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-viewer { order: -1; }
+    .viewer-canvas { aspect-ratio: 16/9; }
+    .nav-links { display: none; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    #about { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+  @media (max-width: 560px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 2rem 1.5rem; }
+    .hero { padding-top: 7rem; padding-bottom: 4rem; }
+    .hero-ctas { flex-direction: column; }
+    .btn-primary, .btn-ghost { text-align: center; width: 100%; }
+    footer { flex-direction: column; text-align: center; }
+    .viewer-sliders { flex-direction: column; align-items: stretch; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#"><span>N</span>ot A Robot Engineering</a>
+  <ul class="nav-links">
+    <li><a href="#capabilities">Capabilities</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+
+  <div class="hero-text">
+    <div class="hero-eyebrow">Computational Design · Metamaterials · Orthopedics</div>
+    <h1>
+      Engineering<br>
+      Done<br>
+      <span class="alt">Different.</span>
+    </h1>
+    <p class="hero-sub">
+      Advanced implicit modeling, algorithmically-driven workflows, and bioinspired geometry — delivering orthopedic implant designs that exceed where traditional approaches fall short.
+    </p>
+    <div class="hero-ctas">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="#contact" class="btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+
+  <!-- TPMS VIEWER -->
+  <div class="hero-viewer">
+    <div class="viewer-frame">
+      <canvas id="tpmsCanvas" class="viewer-canvas"></canvas>
+      <div class="viewer-hint" id="viewerHint">drag to rotate &nbsp;·&nbsp; scroll to zoom</div>
+      <div class="viewer-badge" id="surfBadge">Fischer-Koch S</div>
+    </div>
+    <div class="viewer-controls">
+      <div class="viewer-surface-tabs">
+        <button class="surf-tab active" data-surf="fks">Fischer-Koch S</button>
+        <button class="surf-tab" data-surf="lidinoid">Lidinoid</button>
+      </div>
+      <div class="viewer-sliders">
+        <div class="slider-group">
+          <label>Cells</label>
+          <input type="range" id="sCells" min="0.5" max="3" step="0.25" value="1">
+          <span class="slider-val" id="vCells">1.0×</span>
+        </div>
+        <div class="slider-group">
+          <label>Wall t</label>
+          <input type="range" id="sWall" min="0.04" max="1.2" step="0.02" value="0.28">
+          <span class="slider-val" id="vWall">0.28</span>
+        </div>
+      </div>
+      <a href="https://mshomper.github.io/tpms-builder" target="_blank" style="display:block; text-align:center; font-family:var(--font-display); font-size:0.65rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); text-decoration:none; padding:0.6rem 1rem; border-top:1px solid var(--border); transition:color 0.2s;" onmouseover="this.style.color='#c8f542'" onmouseout="this.style.color='#888580'">Explore Full TPMS Builder &#8599;</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-number">8<span>+</span></span>
+    <span class="stat-label">Years nTop Expertise</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">100<span>%</span></span>
+    <span class="stat-label">Fully Implicit Pipeline</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">12<span>+</span></span>
+    <span class="stat-label">TPMS Surface Types</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">&#8734;</span>
+    <span class="stat-label">Design Possibilities</span>
+  </div>
+</div>
+
+<!-- CAPABILITIES -->
+<section id="capabilities">
+  <div class="section-tag">What We Do</div>
+  <h2 class="section-title">Geometry that<br>nature already solved.</h2>
+  <p class="section-subtitle">Bridging the gap between biological architecture and manufacturable implant geometry — no mesh intermediates, no guesswork.</p>
+
+  <div class="cap-list">
+    <div class="cap-item">
+      <div class="cap-item-header">
+        <span class="cap-name">Triply Periodic Minimal Surfaces</span>
+        <span class="cap-arrow">&#8594;</span>
+      </div>
+      <p class="cap-desc">Gyroid, Schwartz-P, Lidinoid, Fischer-Koch S — fully parametric implicit scaffolds with tunable porosity and stiffness anisotropy.</p>
+    </div>
+    <div class="cap-item">
+      <div class="cap-item-header">
+        <span class="cap-name">Bioinspired Composite Architecture</span>
+        <span class="cap-arrow">&#8594;</span>
+      </div>
+      <p class="cap-desc">Helicoidal fiber layouts inspired by mantis shrimp dactyl club and cortical bone — directional stiffness hierarchies in a single isotropic material.</p>
+    </div>
+    <div class="cap-item">
+      <div class="cap-item-header">
+        <span class="cap-name">Homogenization &amp; Validation</span>
+        <span class="cap-arrow">&#8594;</span>
+      </div>
+      <p class="cap-desc">FFT-based mechanical homogenization with physiologically validated strain targets (500–1000 µε) for bone scaffold applications.</p>
+    </div>
+    <div class="cap-item">
+      <div class="cap-item-header">
+        <span class="cap-name">Open-Source Pipeline</span>
+        <span class="cap-arrow">&#8594;</span>
+      </div>
+      <p class="cap-desc">Browser-based TPMS builder at mshomper.github.io/tpms-builder — no proprietary lock-in, full transparency, export-ready.</p>
+    </div>
+    <div class="cap-item">
+      <div class="cap-item-header">
+        <span class="cap-name">Topology Optimization</span>
+        <span class="cap-arrow">&#8594;</span>
+      </div>
+      <p class="cap-desc">Load-path driven lattice infill strategies, field-guided grading, and structural optimization for ALIF cages, acetabular cups, and more.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-tag">Offerings</div>
+  <h2 class="section-title">Consulting Services</h2>
+  <p class="section-subtitle">End-to-end computational design consultation — from concept geometry to validated, print-ready deliverables.</p>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-number">01</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="32" height="32" rx="4" stroke="#c8f542" stroke-width="1.2" stroke-opacity="0.5"/>
+        <circle cx="20" cy="20" r="8" stroke="#c8f542" stroke-width="1.5" stroke-opacity="0.8"/>
+        <circle cx="20" cy="20" r="3" fill="#c8f542" fill-opacity="0.6"/>
+        <line x1="20" y1="4" x2="20" y2="12" stroke="#c8f542" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="20" y1="28" x2="20" y2="36" stroke="#c8f542" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="4" y1="20" x2="12" y2="20" stroke="#c8f542" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="28" y1="20" x2="36" y2="20" stroke="#c8f542" stroke-width="1" stroke-opacity="0.4"/>
+      </svg>
+      <div class="service-name">Orthopedic Implant Design</div>
+      <p class="service-desc">Custom metamaterial scaffolds for spinal, acetabular, and extremity applications. Porosity grading, stiffness tuning, and osseointegration optimization.</p>
+      <div class="service-tags">
+        <span class="tag">ALIF Cages</span><span class="tag">Acetabular Cups</span><span class="tag">Porous Titanium</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-number">02</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 32 C8 20 20 8 32 8" stroke="#42e8f5" stroke-width="1.5" stroke-opacity="0.7" stroke-linecap="round"/>
+        <path d="M8 32 C8 26 14 14 26 10" stroke="#42e8f5" stroke-width="1" stroke-opacity="0.4" stroke-linecap="round"/>
+        <circle cx="32" cy="8" r="3" fill="#42e8f5" fill-opacity="0.7"/>
+        <circle cx="8" cy="32" r="3" fill="#42e8f5" fill-opacity="0.7"/>
+        <circle cx="20" cy="20" r="2.5" fill="#c8f542" fill-opacity="0.8"/>
+      </svg>
+      <div class="service-name">Bioinspired Structure Development</div>
+      <p class="service-desc">Translating biological architectures — helicoidal fiber arrays, trabecular bone topology, dactyl club geometry — into manufacturable implicit models.</p>
+      <div class="service-tags">
+        <span class="tag">Bouligand</span><span class="tag">Cortical Bone</span><span class="tag">Mantis Shrimp</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-number">03</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="18" width="28" height="14" rx="2" stroke="#f5a842" stroke-width="1.2" stroke-opacity="0.6"/>
+        <path d="M14 18 V10 H26 V18" stroke="#f5a842" stroke-width="1.2" stroke-opacity="0.4"/>
+        <line x1="20" y1="22" x2="20" y2="28" stroke="#f5a842" stroke-width="1.5" stroke-opacity="0.7" stroke-linecap="round"/>
+        <line x1="16" y1="25" x2="24" y2="25" stroke="#f5a842" stroke-width="1.5" stroke-opacity="0.7" stroke-linecap="round"/>
+      </svg>
+      <div class="service-name">Simulation &amp; Homogenization</div>
+      <p class="service-desc">FFT-based mechanical homogenization, compliance tensor characterization, and physiologically targeted stiffness validation for clinical scaffold applications.</p>
+      <div class="service-tags">
+        <span class="tag">FFT-CG Solver</span><span class="tag">Stiffness Tensor</span><span class="tag">Bone Remodeling</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-number">04</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="6,30 14,18 20,24 28,10 34,16" stroke="#c8f542" stroke-width="1.5" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="6" cy="30" r="2" fill="#c8f542" fill-opacity="0.6"/>
+        <circle cx="34" cy="16" r="2" fill="#c8f542" fill-opacity="0.6"/>
+      </svg>
+      <div class="service-name">Design Space Exploration</div>
+      <p class="service-desc">Parametric sweep dashboards with k-means clustering, multi-domain metric filtering, and Pareto-optimal design ranking across application-specific performance targets.</p>
+      <div class="service-tags">
+        <span class="tag">Anisotropy Sweep</span><span class="tag">Porosity Gradient</span><span class="tag">Multi-Objective</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-number">05</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6 L34 14 L34 26 L20 34 L6 26 L6 14 Z" stroke="#42e8f5" stroke-width="1.2" stroke-opacity="0.6" fill="none"/>
+        <path d="M20 12 L28 17 L28 23 L20 28 L12 23 L12 17 Z" stroke="#42e8f5" stroke-width="1" stroke-opacity="0.4" fill="none"/>
+        <circle cx="20" cy="20" r="3" fill="#42e8f5" fill-opacity="0.5"/>
+      </svg>
+      <div class="service-name">nTopology Workflow Engineering</div>
+      <p class="service-desc">8+ years of expert-level nTop experience — field-driven lattice infill, implicit Boolean operations, simulation feedback loops, and repeatable design automation.</p>
+      <div class="service-tags">
+        <span class="tag">nTopology</span><span class="tag">Implicit Modeling</span><span class="tag">Automation</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-number">06</div>
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="8" width="10" height="10" rx="1.5" stroke="#f5a842" stroke-width="1.2" stroke-opacity="0.6"/>
+        <rect x="22" y="8" width="10" height="10" rx="1.5" stroke="#f5a842" stroke-width="1.2" stroke-opacity="0.6"/>
+        <rect x="8" y="22" width="10" height="10" rx="1.5" stroke="#f5a842" stroke-width="1.2" stroke-opacity="0.6"/>
+        <rect x="22" y="22" width="10" height="10" rx="1.5" stroke="#f5a842" stroke-width="1.2" stroke-opacity="0.6"/>
+        <circle cx="20" cy="20" r="2" fill="#f5a842" fill-opacity="0.7"/>
+      </svg>
+      <div class="service-name">Print Readiness &amp; AM Advisory</div>
+      <p class="service-desc">Minimum wall thickness enforcement (&#8805;200&nbsp;µm), support strategy guidance, build orientation analysis, and AM process selection for SLM and EBM titanium.</p>
+      <div class="service-tags">
+        <span class="tag">Ti-6Al-4V</span><span class="tag">SLM / EBM</span><span class="tag">DfAM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div>
+    <div class="section-tag">About</div>
+    <h2 class="section-title">Not&nbsp;a&nbsp;robot.<br>Not&nbsp;a&nbsp;generalist.</h2>
+    <p class="section-subtitle" style="margin-bottom:2rem;">
+      Not A Robot Engineering is an independent computational design consultancy. The work lives at the intersection of biomimicry, implicit geometry, and orthopedic engineering — where standard CAD stops and genuinely novel structure begins.
+    </p>
+    <p style="font-size:0.9rem; color:var(--muted); line-height:1.75; font-weight:300; max-width:50ch; margin-bottom:2rem;">
+      Deep domain expertise in TPMS metamaterials, bioinspired composite architecture, and mechanical homogenization. Fluent in nTopology, fully implicit pipelines, and the biology that underpins every design decision.
+    </p>
+    <div class="expertise-pills">
+      <span class="pill pill-accent">TPMS Metamaterials</span>
+      <span class="pill pill-cyan">Bioinspired Design</span>
+      <span class="pill pill-amber">Orthopedic Implants</span>
+      <span class="pill pill-accent">nTopology</span>
+      <span class="pill pill-cyan">FFT Homogenization</span>
+      <span class="pill pill-amber">Additive Manufacturing</span>
+      <span class="pill pill-accent">Cortical Bone Architecture</span>
+      <span class="pill pill-cyan">Mantis Shrimp Structures</span>
+    </div>
+  </div>
+
+  <div class="about-visual">
+    <div class="about-accent-line"></div>
+    <div class="about-quote">
+      "Where internal teams or other consultants have fallen short — that's where we start."
+    </div>
+    <div class="about-attr">— Not A Robot Engineering</div>
+    <div style="margin-top:2rem; padding-top:2rem; border-top:1px solid var(--border);">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <div>
+          <div style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; color:var(--accent);">8+</div>
+          <div style="font-size:0.78rem; color:var(--muted); margin-top:0.25rem; text-transform:uppercase; letter-spacing:0.08em; font-family:var(--font-display);">Years nTopology</div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; color:var(--accent2);">100%</div>
+          <div style="font-size:0.78rem; color:var(--muted); margin-top:0.25rem; text-transform:uppercase; letter-spacing:0.08em; font-family:var(--font-display);">Implicit Pipeline</div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; color:var(--accent3);">Open</div>
+          <div style="font-size:0.78rem; color:var(--muted); margin-top:0.25rem; text-transform:uppercase; letter-spacing:0.08em; font-family:var(--font-display);">Source Tools</div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; color:var(--accent);">Med</div>
+          <div style="font-size:0.78rem; color:var(--muted); margin-top:0.25rem; text-transform:uppercase; letter-spacing:0.08em; font-family:var(--font-display);">Device Focus</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-tag" style="justify-content:center;">Get in Touch</div>
+    <h2 class="section-title">Ready to build<br>something that matters?</h2>
+    <p class="section-subtitle" style="margin:1.5rem auto 0; text-align:center;">
+      Whether you have a clear brief or an unsolved problem — reach out. Consulting engagements, collaborations, and research partnerships welcome.
+    </p>
+    <a href="mailto:matt@notarobot-eng.com" class="contact-email">matt@notarobot-eng.com</a>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="https://notarobot-eng.com" class="btn-ghost" target="_blank">notarobot-eng.com</a>
+      <a href="https://mshomper.github.io/tpms-builder" class="btn-ghost" target="_blank">TPMS Builder &#8599;</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Not A <span style="color:var(--accent)">Robot</span> Engineering LLC</div>
+  <div class="footer-copy">&#169; 2026 Not A Robot Engineering LLC &middot; All rights reserved</div>
+</footer>
+
+<!-- ================================================================
+     TPMS VIEWER — WebGL raymarcher (verbatim shader from tpms-builder)
+     ================================================================ -->
+<script>
+(function(){
+  var canvas = document.getElementById('tpmsCanvas');
+  var gl = canvas.getContext('webgl');
+  if(!gl){ canvas.parentElement.style.background='#111'; return; }
+
+  // ── Resize canvas to match CSS display size ──────────────────────
+  function resize(){
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+    if(canvas.width !== w || canvas.height !== h){
+      canvas.width = w;
+      canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+  }
+  resize();
+  window.addEventListener('resize', function(){ resize(); needsRebuild=true; });
+
+  // ── Surface definitions (GLSL verbatim from tpms-builder presets) ─
+  var SURFACES = {
+    fks: {
+      label: 'Fischer-Koch S',
+      glsl: 'cos(2.*gx)*sin(gy)*cos(gz)+cos(2.*gy)*sin(gz)*cos(gx)+cos(2.*gz)*sin(gx)*cos(gy)'
+    },
+    lidinoid: {
+      label: 'Lidinoid',
+      glsl: '1.1*(sin(2.*gx)*cos(gy)*sin(gz)+sin(gx)*sin(2.*gy)*cos(gz)+cos(gx)*sin(gy)*sin(2.*gz))-0.2*(cos(2.*gx)*cos(2.*gy)+cos(2.*gy)*cos(2.*gz)+cos(2.*gz)*cos(2.*gx))-0.4*(cos(2.*gx)+cos(2.*gy)+cos(2.*gz))'
+    }
+  };
+
+  // ── State ─────────────────────────────────────────────────────────
+  var currentSurf = 'fks';
+  var cellMult    = 1.0;
+  var wallVal     = 0.28;
+  var camZoom     = 16;
+  var rotMat      = [1,0,0, 0,1,0, 0,0,1];
+  var drag        = false, lx = 0, ly = 0;
+  var autoRot     = true;
+  var prog        = null, quadBuf = null;
+  var uRes, uRot, uZoom;
+  var needsRebuild = true;
+  var hintEl      = document.getElementById('viewerHint');
+  var badgeEl     = document.getElementById('surfBadge');
+
+  // ── Helpers ───────────────────────────────────────────────────────
+  function toFloat(v){ var s=parseFloat(parseFloat(v).toFixed(6)).toString(); return s.indexOf('.')>=0?s:s+'.0'; }
+
+  function mat3Mul(A,B){
+    var r=new Array(9);
+    for(var c=0;c<3;c++)
+      for(var row=0;row<3;row++)
+        r[c*3+row]=A[0*3+row]*B[c*3+0]+A[1*3+row]*B[c*3+1]+A[2*3+row]*B[c*3+2];
+    return r;
+  }
+
+  function rotAxisAngle(ax,ay,az,angle){
+    var c=Math.cos(angle),s=Math.sin(angle),t2=1-c;
+    var l=Math.sqrt(ax*ax+ay*ay+az*az)||1; ax/=l;ay/=l;az/=l;
+    return[t2*ax*ax+c, t2*ax*ay+s*az, t2*ax*az-s*ay,
+           t2*ax*ay-s*az, t2*ay*ay+c, t2*ay*az+s*ax,
+           t2*ax*az+s*ay, t2*ay*az-s*ax, t2*az*az+c];
+  }
+
+  function applyDelta(dx,dy){
+    if(Math.abs(dx)>0.001) rotMat=mat3Mul(rotAxisAngle(0,1,0,dx*0.007),rotMat);
+    if(Math.abs(dy)>0.001){
+      var rx=rotMat[0],ry=rotMat[1],rz=rotMat[2];
+      rotMat=mat3Mul(rotAxisAngle(rx,ry,rz,-dy*0.007),rotMat);
+    }
+  }
+
+  // Initial view angle
+  rotMat = mat3Mul(rotAxisAngle(0,1,0,0.6), rotAxisAngle(1,0,0,0.45));
+
+  // ── Shader builder ────────────────────────────────────────────────
+  var VERT = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
+
+  function buildFrag(){
+    var surf = SURFACES[currentSurf];
+    var H    = toFloat(Math.PI * cellMult);
+    var W    = toFloat(wallVal);
+    var featureSize = toFloat(wallVal);
+
+    // thin-wall (sheet) mode: |φ(p)| < wallVal
+    return [
+'precision highp float;',
+'uniform vec2 res; uniform mat3 rot; uniform float zoom;',
+
+'float base(vec3 p, float H){',
+'  float gx=p.x, gy=p.y, gz=p.z;',
+'  return '+surf.glsl+';',
+'}',
+
+'float implicit(vec3 p, float H){ return abs(base(p,H)) - '+W+'; }',
+
+'float boxSDF(vec3 p,float H){vec3 d=abs(p)-H;return length(max(d,0.0))+min(max(d.x,max(d.y,d.z)),0.0);}',
+'float sceneSDF(vec3 p,float H){ return max(implicit(p,H), boxSDF(p,H)); }',
+
+'vec3 nrm(vec3 p,float H,float e){',
+'  return normalize(vec3(',
+'    sceneSDF(p+vec3(e,0,0),H)-sceneSDF(p-vec3(e,0,0),H),',
+'    sceneSDF(p+vec3(0,e,0),H)-sceneSDF(p-vec3(0,e,0),H),',
+'    sceneSDF(p+vec3(0,0,e),H)-sceneSDF(p-vec3(0,0,e),H)',
+'  ));',
+'}',
+
+'vec3 palette(float t){',
+'  vec3 dark=vec3(0.13,0.14,0.13);',
+'  vec3 white=vec3(0.94,0.96,0.92);',
+'  vec3 green=vec3(0.784,0.961,0.259);',
+'  float s=clamp(t*2.0,0.0,1.0);',
+'  float s2=clamp(t*2.0-1.0,0.0,1.0);',
+'  vec3 lo=mix(dark,white,s);',
+'  return mix(lo,green,s2*s2);',
+'}',
+
+'void main(){',
+'  vec2 uv=(gl_FragCoord.xy-res*0.5)/min(res.x,res.y);',
+'  vec3 ro=rot*vec3(0.0,0.0,zoom);',
+'  vec3 rd=normalize(rot*vec3(uv.x,uv.y,-1.6));',
+'  float H='+H+';',
+'  float r=clamp(length(uv)*1.1,0.0,1.0);',
+'  vec3 bgCentre=vec3(0.07,0.07,0.07);',
+'  vec3 bgEdge=vec3(0.03,0.03,0.03);',
+'  vec3 bgCol=mix(bgCentre,bgEdge,r*r);',
+'  vec4 bg=vec4(bgCol,1.0);',
+'  float camScale=clamp(zoom/16.0,0.15,1.0);',
+'  float thresh='+featureSize+'*0.008*camScale;',
+'  float maxStep='+featureSize+'*0.25*camScale;',
+'  float nrmE='+featureSize+'*0.06*camScale;',
+'  vec3 iv=vec3(1.0)/rd;',
+'  vec3 tb=(-vec3(H,H,H)-ro)*iv, tt=(vec3(H,H,H)-ro)*iv;',
+'  vec3 tmi=min(tb,tt), tma=max(tb,tt);',
+'  float tEn=max(max(tmi.x,tmi.y),tmi.z);',
+'  float tEx=min(min(tma.x,tma.y),tma.z);',
+'  if(tEn>tEx||tEx<0.0){gl_FragColor=bg;return;}',
+'  float t=max(tEn,0.001); bool hit=false;',
+'  for(int i=0;i<512;i++){',
+'    vec3 p=ro+rd*t; float d=sceneSDF(p,H);',
+'    if(d<thresh){hit=true;break;}',
+'    if(t>tEx+0.01)break;',
+'    t+=clamp(d*0.85,thresh*0.5,maxStep);',
+'  }',
+'  if(!hit){',
+'    if(tEn>=0.0){',
+'      vec3 pc=ro+rd*tEn, ep=abs(pc)/H;',
+'      vec2 fp; if(ep.x>ep.y&&ep.x>ep.z)fp=ep.yz; else if(ep.y>ep.z)fp=ep.xz; else fp=ep.xy;',
+'      float ed=min(1.0-fp.x,1.0-fp.y);',
+'      if(ed<0.04){float w=smoothstep(0.04,0.005,ed);gl_FragColor=mix(bg,vec4(0.78,0.96,0.26,1.0),w*0.4);return;}',
+'    }',
+'    gl_FragColor=bg; return;',
+'  }',
+'  vec3 pos=ro+rd*t, n=nrm(pos,H,nrmE);',
+'  if(dot(n,-rd)<0.0)n=-n;',
+'  float dy2=dot(n,vec3(0.0,1.0,0.0)), dz2=dot(n,vec3(0.0,0.0,1.0));',
+'  float hue=dy2*dy2*0.33+dz2*dz2*0.67;',
+'  vec3 iridBase=palette(hue);',
+'  vec3 iridShift=palette(hue+0.5);',
+'  vec3 l1=normalize(vec3(1.0,1.8,2.0)), l2=normalize(vec3(-0.8,-0.3,0.6));',
+'  float l3fill=max(dot(n,normalize(vec3(-0.5,-1.0,-1.5))),0.0)*0.3;',
+'  float diff=0.35+max(dot(n,l1),0.0)*0.7+max(dot(n,l2),0.0)*0.25+l3fill;',
+'  float spec1=pow(max(dot(reflect(-l1,n),-rd),0.0),120.0)*1.5;',
+'  float spec2=pow(max(dot(reflect(-l1,n),-rd),0.0),20.0)*0.4;',
+'  float rim=pow(1.0-max(dot(n,-rd),0.0),2.5)*0.8;',
+'  vec3 green=vec3(0.784,0.961,0.259);',
+'  vec3 col=iridBase*diff+vec3(1.0,1.0,1.0)*spec1+green*spec2*0.6+green*rim*0.45;',
+'  col=mix(bgCol,col,exp(-t*0.010));',
+'  gl_FragColor=vec4(clamp(col,0.0,1.0),1.0);',
+'}'
+    ].join('\n');
+  }
+
+  function mkShader(type, src){
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+      console.error('TPMS shader error:', gl.getShaderInfoLog(s));
+    return s;
+  }
+
+  function rebuildShader(){
+    var p = gl.createProgram();
+    gl.attachShader(p, mkShader(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(p, mkShader(gl.FRAGMENT_SHADER, buildFrag()));
+    gl.linkProgram(p);
+    if(!gl.getProgramParameter(p, gl.LINK_STATUS)){ console.error(gl.getProgramInfoLog(p)); return; }
+    if(prog) gl.deleteProgram(prog);
+    prog = p;
+    gl.useProgram(prog);
+
+    if(!quadBuf){
+      quadBuf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    } else {
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+    }
+
+    var loc = gl.getAttribLocation(prog, 'p');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    uRes  = gl.getUniformLocation(prog, 'res');
+    uRot  = gl.getUniformLocation(prog, 'rot');
+    uZoom = gl.getUniformLocation(prog, 'zoom');
+    needsRebuild = false;
+  }
+
+  // ── Render loop ───────────────────────────────────────────────────
+  var lastTime = 0;
+  function render(now){
+    requestAnimationFrame(render);
+    resize();
+
+    if(needsRebuild) rebuildShader();
+    if(!prog) return;
+
+    if(autoRot) applyDelta(0.5, 0.15);
+
+    gl.useProgram(prog);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniformMatrix3fv(uRot, false, rotMat);
+    gl.uniform1f(uZoom, camZoom);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+
+  requestAnimationFrame(render);
+
+  // ── Input: drag ───────────────────────────────────────────────────
+  function onDown(x, y){ drag=true; lx=x; ly=y; autoRot=false; hintEl.style.opacity='0'; }
+  function onMove(x, y){ if(!drag)return; applyDelta(x-lx, y-ly); lx=x; ly=y; }
+  function onUp(){ drag=false; }
+
+  canvas.addEventListener('mousedown',  function(e){ onDown(e.clientX, e.clientY); });
+  window.addEventListener('mousemove',  function(e){ onMove(e.clientX, e.clientY); });
+  window.addEventListener('mouseup',    onUp);
+
+  canvas.addEventListener('touchstart', function(e){ onDown(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }, {passive:false});
+  window.addEventListener('touchmove',  function(e){ if(drag){ onMove(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); } }, {passive:false});
+  window.addEventListener('touchend',   onUp);
+
+  canvas.addEventListener('wheel', function(e){
+    camZoom = Math.max(6, Math.min(30, camZoom + e.deltaY*0.02));
+    e.preventDefault();
+  }, {passive:false});
+
+  // ── Controls: surface tabs ────────────────────────────────────────
+  var tabs = document.querySelectorAll('.surf-tab');
+  for(var i=0; i<tabs.length; i++){
+    tabs[i].addEventListener('click', function(){
+      for(var j=0; j<tabs.length; j++) tabs[j].classList.remove('active');
+      this.classList.add('active');
+      currentSurf = this.dataset.surf;
+      badgeEl.textContent = SURFACES[currentSurf].label;
+      needsRebuild = true;
+    });
+  }
+
+  // ── Controls: sliders ─────────────────────────────────────────────
+  document.getElementById('sCells').addEventListener('input', function(){
+    cellMult = parseFloat(this.value);
+    document.getElementById('vCells').textContent = cellMult.toFixed(1) + '×';
+    needsRebuild = true;
+  });
+
+  document.getElementById('sWall').addEventListener('input', function(){
+    wallVal = parseFloat(this.value);
+    document.getElementById('vWall').textContent = wallVal.toFixed(2);
+    needsRebuild = true;
+  });
+
+})();
+</script>
+</body>
+</html>
